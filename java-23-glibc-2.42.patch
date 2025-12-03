@@ -1,0 +1,12 @@
+diff -up jdk23u-jdk-23.0.2-7/src/hotspot/share/utilities/globalDefinitions.hpp.omv~ jdk23u-jdk-23.0.2-7/src/hotspot/share/utilities/globalDefinitions.hpp
+--- jdk23u-jdk-23.0.2-7/src/hotspot/share/utilities/globalDefinitions.hpp.omv~	2025-09-26 21:59:38.017267843 +0200
++++ jdk23u-jdk-23.0.2-7/src/hotspot/share/utilities/globalDefinitions.hpp	2025-09-26 21:59:45.898917596 +0200
+@@ -1154,7 +1154,7 @@ static inline julong uabs(julong n) {
+   return result;
+ }
+ static inline julong uabs(jlong n) { return uabs((julong)n); }
+-static inline unsigned int uabs(int n) { return uabs((unsigned int)n); }
++//static inline unsigned int uabs(int n) { return uabs((unsigned int)n); }
+ 
+ // "to" should be greater than "from."
+ inline size_t byte_size(void* from, void* to) {

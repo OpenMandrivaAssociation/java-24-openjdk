@@ -21,7 +21,7 @@
 %define minor %(echo %{version} |cut -d. -f2-3)
 %define ver %(echo %{version} |rev |cut -d. -f2- |rev)
 %define subminor 12
-%define is_head 1
+#define is_head 1
 #For non-GA releases: %(echo %{version} |rev |cut -d. -f1 |rev)
 # OpenJDK X requires OpenJDK >= X-1 to build -- so we need
 # to determine the previous version to get build dependencies
@@ -30,7 +30,7 @@
 %define vercode %(if [ "%{minor}" = "0.0" ]; then echo -n %{major}; else echo -n %{ver}; fi)
 
 Name:		java-24-openjdk
-Version:	24.0.0.%{subminor}
+Version:	24.0.2.%{subminor}
 Release:	1
 Summary:	Java Runtime Environment (JRE) %{major}
 Group:		Development/Languages
@@ -43,12 +43,12 @@ Source51:	TestECDSA.java
 # Patches from Fedora
 Patch0:		https://src.fedoraproject.org/rpms/java-openjdk/raw/master/f/rh1648249-add_commented_out_nss_cfg_provider_to_java_security.patch
 Patch1:		https://src.fedoraproject.org/rpms/java-openjdk/raw/master/f/rh1648242-accessible_toolkit_crash_do_not_break_jvm.patch
-Patch2:		https://src.fedoraproject.org/rpms/java-openjdk/raw/master/f/rh1648644-java_access_bridge_privileged_security.patch
 Patch3:		https://src.fedoraproject.org/rpms/java-openjdk/raw/master/f/rh649512-remove_uses_of_far_in_jpeg_libjpeg_turbo_1_4_compat_for_jdk10_and_up.patch
 # Patches from OpenMandriva
 Patch1001:	openjdk-21-clang.patch
 Patch1002:	java-12-compile.patch
 Patch1003:	openjdk-15-nss-3.57.patch
+Patch1004:	java-23-glibc-2.42.patch
 #Patch1005:	openjdk-13-fix-build.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -291,9 +291,12 @@ ln -s java-%{major}-openjdk %{buildroot}%{_jvmdir}/java
 ln -s java-%{major}-openjdk %{buildroot}%{_jvmdir}/jre-openjdk
 ln -s java-%{major}-openjdk %{buildroot}%{_jvmdir}/jre
 
+# FIXME man pages need pandoc, need to solve the haskell mess
+%if 0
 mkdir -p %{buildroot}%{_mandir}
 mv %{buildroot}%{_jvmdir}/java-%{major}-openjdk/man/* %{buildroot}%{_mandir}
 rmdir %{buildroot}%{_jvmdir}/java-%{major}-openjdk/man
+%endif
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
 echo %{_jvmdir}/java-%{major}-openjdk/lib >%{buildroot}%{_sysconfdir}/ld.so.conf.d/java.conf
@@ -384,6 +387,8 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_jvmdir}/jre-%{major}-openjdk
 %{_jvmdir}/java-%{major}-openjdk/bin/jwebserver
 %if %{with system_jdk}
+# FIXME pandoc
+%if 0
 %{_mandir}/man1/java.1*
 %{_mandir}/man1/jpackage.1*
 %{_mandir}/man1/keytool.1*
@@ -395,9 +400,12 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_mandir}/man1/jmod.1*
 %{_mandir}/man1/jshell.1*
 %{_mandir}/man1/jwebserver.1*
+%endif
 %{_sysconfdir}/profile.d/*
 %{_sysconfdir}/ld.so.conf.d/java.conf
 %else
+# FIXME pandoc
+%if 0
 %dir %{_jvmdir}/java-%{major}-openjdk/man
 %dir %{_jvmdir}/java-%{major}-openjdk/man/man1
 %{_jvmdir}/java-%{major}-openjdk/man/man1/java.1*
@@ -411,6 +419,7 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jmod.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jshell.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jwebserver.1*
+%endif
 %endif
 
 %files gui
@@ -454,6 +463,8 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_jvmdir}/java-%{major}-openjdk/bin/jstatd
 %{_jvmdir}/java-%{major}-openjdk/bin/serialver
 %if %{with system_jdk}
+# FIXME pandoc
+%if 0
 %{_mandir}/man1/jar.1*
 %{_mandir}/man1/jarsigner.1*
 %{_mandir}/man1/javac.1*
@@ -472,7 +483,10 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_mandir}/man1/jstatd.1*
 %{_mandir}/man1/serialver.1*
 %{_mandir}/man1/jnativescan.1*
+%endif
 %else
+# FIXME pandoc
+%if 0
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jar.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jarsigner.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/javac.1*
@@ -491,6 +505,7 @@ chmod +x %{buildroot}%{_sysconfdir}/profile.d/*.*sh
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jstatd.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/serialver.1*
 %{_jvmdir}/java-%{major}-openjdk/man/man1/jnativescan.1*
+%endif
 %endif
 %doc %{_jvmdir}/java-%{major}-openjdk/legal/jdk.accessibility
 %doc %{_jvmdir}/java-%{major}-openjdk/legal/jdk.attach
