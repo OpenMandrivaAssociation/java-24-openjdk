@@ -84,6 +84,8 @@ BuildRequires:	nss-static-devel
 %ifnarch %{jit_arches}
 BuildRequires:	pkgconfig(libffi)
 %endif
+# For support/static-native/launcher/java -- do we need to build that?
+BuildRequires:	stdc++-static-devel
 
 # cacerts build requirement.
 BuildRequires:	openssl
