@@ -56,6 +56,7 @@ BuildRequires:	binutils
 BuildRequires:	cups-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	fontconfig
+BuildRequires:	make
 BuildRequires:	xsltproc
 BuildRequires:	zip
 BuildRequires:	pkgconfig(freetype2)
